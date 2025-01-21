@@ -1,9 +1,5 @@
 import eslint from "@eslint/js";
-import nextPlugin from "@next/eslint-plugin-next";
 import stylistic from "@stylistic/eslint-plugin";
-import jsxA11y from "eslint-plugin-jsx-a11y";
-import reactPlugin from "eslint-plugin-react";
-import hooksPlugin from "eslint-plugin-react-hooks";
 import sortPlugin from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 
@@ -118,19 +114,6 @@ export default tseslint.config(
   },
   {
     plugins: {
-      "react-hooks": hooksPlugin,
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
-    rules: {
-      ...hooksPlugin.configs.recommended.rules,
-    },
-  },
-  {
-    plugins: {
       "simple-import-sort": sortPlugin,
     },
     rules: {
@@ -138,19 +121,7 @@ export default tseslint.config(
       "simple-import-sort/exports": ["warn"],
     },
   },
-  {
-    plugins: {
-      "@next/next": nextPlugin,
-    },
-    rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs["core-web-vitals"].rules,
-    },
-  },
   eslint.configs.recommended,
   tseslint.configs.recommended,
-  tseslint.configs.stylistic,
-  reactPlugin.configs.flat.recommended,
-  reactPlugin.configs.flat["jsx-runtime"],
-  jsxA11y.flatConfigs.recommended
+  tseslint.configs.stylistic
 );
