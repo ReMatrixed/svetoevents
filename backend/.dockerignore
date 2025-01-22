@@ -4,12 +4,8 @@ node_modules
 # testing
 coverage
 
-# next.js
-.next
-out
-
 # build
-build
+dist
 
 # misc
 .DS_Store
@@ -21,12 +17,8 @@ build
 # env files
 .env*
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
 # ide
 .idea

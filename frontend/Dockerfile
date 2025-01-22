@@ -22,7 +22,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Отключение телеметрии NEXT.js
-# ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Сборка контейнера с кодом frontend'а
 RUN corepack enable pnpm && pnpm run build
@@ -31,9 +31,11 @@ RUN corepack enable pnpm && pnpm run build
 FROM base AS runner
 WORKDIR /app
 
+# Цель сборки - production
 ENV NODE_ENV=production
-# Отключение телеметрии NEXT.js
-# ENV NEXT_TELEMETRY_DISABLED=1
+
+# Отключение телеметрии NEXT.js (повторно)
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Создание пользователя и группы
 RUN addgroup --system --gid 1001 nodejs
@@ -42,8 +44,7 @@ RUN adduser --system --uid 1001 nextjs
 # Копирование собранного frontend'а
 COPY --from=builder /app/public ./public
 
-# Оптимизация output traces
-# https://nextjs.org/docs/advanced-features/output-file-tracing
+# Копирование файлов после сборки node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 

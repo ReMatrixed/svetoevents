@@ -1,0 +1,64 @@
+# Обратите внимание: для production-сред рекомендуется использовать reverse-proxy
+
+services:
+  svetoevents-db:
+    image: postgres
+    container_name: svetoevents-db
+    restart: always
+    shm_size: 256mb
+    ports:
+      - 5432:5432
+    volumes:
+      - ./svetoevents-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DB_NAME}
+
+  svetoevents-bouncer:
+    image: bitnami/pgbouncer:latest
+    container_name: svetoevents-bouncer
+    restart: always
+    depends_on:
+      - svetoevents-db
+    ports:
+      - 6432:6432
+    environment:
+      PGBOUNCER_DATABASE: ${POSTGRESQL_DB_NAME}
+      # Измение POOL_MODE - требование Prisma ORM
+      PGBOUCER_POOL_MODE: transaction
+      POSTGRESQL_USERNAME: ${POSTGRESQL_USERNAME}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_HOST: svetoevents-db
+      POSTGRESQL_PORT: 5432
+
+  svetoevents-backend:
+    image: svetoevents/backend
+    container_name: svetoevents-backend
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - svetoevents-db
+      - svetoevents-bouncer
+    environment:
+      DB_DIRECT_URL: postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@svetoevents-db:5432/${POSTGRESQL_DB_NAME}
+      DB_BOUNCER_URL: postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@svetoevents-bouncer:6432/${POSTGRESQL_DB_NAME}
+
+  svetoevents-frontend:
+    image: svetoevents/frontend
+    container_name: svetoevents-frontend
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - svetoevents-backend
+
+volumes:
+  svetoevents-db-data:
