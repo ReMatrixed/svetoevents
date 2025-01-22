@@ -38,11 +38,7 @@ next-env.d.ts
 *.sublime-workspace
 
 # vscode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode
 
 # readme
 README.md
