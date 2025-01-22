@@ -1,0 +1,37 @@
+# Обратите внимание: для production-сред рекомендуется использовать reverse-proxy
+
+services:
+  svetoevents-db:
+    image: postgres
+    container_name: svetoevents-db
+    restart: always
+    shm_size: 256mb
+    ports:
+      - 5432:5432
+    volumes:
+      - svetoevents-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DB_NAME}
+
+  svetoevents-bouncer:
+    image: bitnami/pgbouncer:latest
+    container_name: svetoevents-bouncer
+    restart: always
+    depends_on:
+      - svetoevents-db
+    ports:
+      - 6432:6432
+    environment:
+      PGBOUNCER_DATABASE: ${POSTGRESQL_DB_NAME}
+      # Измение POOL_MODE - требование Prisma ORM
+      PGBOUCER_POOL_MODE: transaction
+      POSTGRESQL_USERNAME: ${POSTGRESQL_USERNAME}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_HOST: svetoevents-db
+      POSTGRESQL_PORT: 5432
+
+volumes:
+  svetoevents-db-data:
+    external: true
