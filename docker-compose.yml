@@ -9,7 +9,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./svetoevents-db-data:/var/lib/postgresql/data
+      - svetoevents-db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRESQL_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
