@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 
 import { AddEventDto, GetUpcomingDto, SearchByDateDto, SearchByTitleDto } from "./dto/events.dto";
 import { EventsService } from "./events.service";
@@ -9,32 +9,32 @@ export class EventsController {
 
   @Get("upcoming")
   async getUpcomingEvents(
-    @Body() body: GetUpcomingDto
+    @Query() query: GetUpcomingDto
   ) {
     return {
-      events: await this.eventsService.getUpcoming(body.amount),
+      events: await this.eventsService.getUpcoming(query.amount),
     };
   }
 
   @Get("search/title")
   async getEventsByTitle(
-    @Body() body: SearchByTitleDto
+    @Query() query: SearchByTitleDto
   ) {
     return {
       events: await this.eventsService.searchByTitle(
-        body.amount,
-        body.request
+        query.amount,
+        query.request
       ),
     };
   }
 
   @Get("search/date")
   async getEventsByDate(
-    @Body() body: SearchByDateDto
+    @Query() query: SearchByDateDto
   ) {
     return {
       events: await this.eventsService.searchByDate(
-        body.amount, new Date(body.date)
+        query.amount, new Date(query.date)
       ),
     };
   }
