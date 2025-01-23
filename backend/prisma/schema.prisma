@@ -17,7 +17,7 @@ model Event {
   rating      Int      @db.SmallInt
   location    String
   image       String
-  on_edit     Boolean
+  on_edit     Boolean  @default(false)
 
   @@map(name: "events")
 }
