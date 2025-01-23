@@ -11,6 +11,11 @@ export class EventsService {
   ): Promise<EventModel[]> {
     return this.prisma.event.findMany({
       take: take,
+      where: {
+        date: {
+          gte: new Date(),
+        },
+      },
       orderBy: {
         date: "asc",
       },
