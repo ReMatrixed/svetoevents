@@ -26,7 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${geologica.className} ${jetbrains.className} antialiased`}>
+      <body
+        className={
+          `${geologica.className} ${jetbrains.className} antialiased`
+        }
+      >
         <ThemeProvider
           attribute="class"
           enableSystem
