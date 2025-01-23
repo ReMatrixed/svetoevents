@@ -20,10 +20,8 @@ export function PageHeader() {
       <div className="flex h-full justify-between items-center p-3">
         <a href="https://events.matrixed.ru">
           <NextImage
-            className="hover:scale-110 transition-all"
+            className="w-10 hover:scale-110 transition-all duration-300"
             src={ProjectLogo}
-            width={36}
-            height={36}
             alt="Логотип СветоСобытий"
             priority
           />

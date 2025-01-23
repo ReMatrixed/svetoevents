@@ -10,13 +10,14 @@ export function PageFooter() {
   return (
     <footer className="w-full mt-52 border-t">
       <div className="flex h-full justify-between items-center p-3">
-        <NextImage
-          src={DeveloperLogo}
-          width={64}
-          height={32}
-          alt="Логотип разработчика"
-          priority
-        />
+        <a href="https://matrixed.ru">
+          <NextImage
+            className="w-16 hover:scale-110 transition-all duration-300"
+            src={DeveloperLogo}
+            alt="Логотип разработчика"
+            priority
+          />
+        </a>
         <div className="flex gap-2">
           <Button
             variant="outline"
