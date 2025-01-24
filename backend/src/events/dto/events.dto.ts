@@ -1,5 +1,5 @@
 import { ApiConsumes, ApiProperty } from "@nestjs/swagger";
-import { IsDateString, IsLowercase, IsNumber, IsString, IsUUID, Max, MaxLength, Min, MinLength } from "class-validator";
+import { IsDateString, IsNumber, IsString, IsUUID, Max, MaxLength, Min, MinLength } from "class-validator";
 
 export class GetUpcomingDto {
   @ApiProperty({
