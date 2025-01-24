@@ -14,7 +14,7 @@
     "start:prod": "node dist/main",
     "dev": "nest start --watch",
     "debug": "nest start --debug --watch",
-    "lint": "eslint . --fix",
+    "lint": "eslint src --fix",
     "preinstall": "npx only-allow pnpm",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"

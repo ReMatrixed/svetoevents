@@ -16,9 +16,6 @@ export default tseslint.config(
     plugins: {
       "@stylistic": stylistic,
     },
-    languageOptions: {
-      ecmaVersion: "latest",
-    },
     rules: {
       "@stylistic/array-bracket-newline": ["error", "consistent"],
       "@stylistic/array-bracket-spacing": ["error"],
