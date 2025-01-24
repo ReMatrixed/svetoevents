@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Event as EventModel } from "@prisma/client";
 import { PrismaService } from "src/prisma.service";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class EventsService {
@@ -60,24 +61,34 @@ export class EventsService {
     rating: number,
     location: string,
     image: string
-  ): Promise<boolean> {
-    try {
-      await this.prisma.event.create({
-        data: {
-          title,
-          description,
-          date,
-          category,
-          rating,
-          location,
-          image,
-        },
-      });
-      return true;
-    }
-    catch (err) {
-      console.error(err);
-      return false;
-    }
+  ): Promise<string> {
+    const uuid = uuidv4();
+    await this.prisma.event.create({
+      data: {
+        id: uuid,
+        title,
+        description,
+        date,
+        category,
+        rating,
+        location,
+        image,
+      },
+    });
+    return uuid;
+  }
+
+  async updateEventImage(
+    id: string,
+    filename: string
+  ) {
+    await this.prisma.event.update({
+      where: {
+        id,
+      },
+      data: {
+        image: filename,
+      },
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { IsDateString, IsNumber, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
+import { IsDateString, IsNumber, IsString, IsUUID, Max, MaxLength, Min, MinLength } from "class-validator";
 
 export class GetUpcomingDto {
   @IsNumber()
@@ -59,4 +59,9 @@ export class AddEventDto {
   @MinLength(1)
   @MaxLength(128)
   image: string;
+}
+
+export class UploadEventImageDto {
+  @IsUUID(4)
+  id: string;
 }
