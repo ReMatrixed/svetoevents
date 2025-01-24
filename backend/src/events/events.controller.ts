@@ -1,6 +1,12 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { ApiConsumes } from "@nestjs/swagger";
+import { diskStorage } from "multer";
+import { join } from "path";
+import { imageFileFilter } from "src/lib/utils/filefilter";
+import { v4 as uuidv4 } from "uuid";
 
-import { AddEventDto, GetUpcomingDto, SearchByDateDto, SearchByTitleDto } from "./dto/events.dto";
+import { AddEventDto, getEventByIdDto, GetUpcomingDto, SearchByDateDto, SearchByTitleDto } from "./dto/events.dto";
 import { EventsService } from "./events.service";
 
 @Controller()
@@ -40,19 +46,40 @@ export class EventsController {
   }
 
   @Post("event")
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(FileInterceptor("file", {
+    storage: diskStorage({
+      destination: join(__dirname, "..", "..", "upload"),
+      filename: function (req, file, cb) {
+        cb(null, uuidv4() + "." + file.mimetype.split("/")[1]);
+      },
+    }),
+    limits: {
+      fileSize: 1000 * 1000 * 2,
+    },
+    fileFilter: imageFileFilter,
+  }))
   async postEvent(
-    @Body() body: AddEventDto
+    @Body() body: AddEventDto,
+    @UploadedFile() file: Express.Multer.File
   ) {
     return {
       success: await this.eventsService.addEvent(
         body.title,
         body.description,
         new Date(body.date),
-        body.category,
+        body.category.toLowerCase(),
         body.rating,
         body.location,
-        body.image
+        file.filename
       ),
     };
+  }
+
+  @Get("event")
+  async getEventById(
+    @Query() query: getEventByIdDto
+  ) {
+    return await this.eventsService.getEventById(query.id);
   }
 }

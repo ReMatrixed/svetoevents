@@ -78,17 +78,14 @@ export class EventsService {
     return uuid;
   }
 
-  async updateEventImage(
-    id: string,
-    filename: string
-  ) {
-    await this.prisma.event.update({
+  async getEventById(
+    id: string
+  ): Promise<EventModel | null> {
+    const event = await this.prisma.event.findFirst({
       where: {
         id,
       },
-      data: {
-        image: filename,
-      },
     });
+    return event;
   }
 }
