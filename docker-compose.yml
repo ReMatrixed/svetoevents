@@ -13,7 +13,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRESQL_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
-      POSTGRES_DB: ${POSTGRESQL_DB_NAME}
+      POSTGRES_DB: ${POSTGRESQL_DB}
 
   svetoevents-bouncer:
     image: bitnami/pgbouncer:latest
@@ -24,7 +24,7 @@ services:
     ports:
       - 6432:6432
     environment:
-      PGBOUNCER_DATABASE: ${POSTGRESQL_DB_NAME}
+      PGBOUNCER_DATABASE: ${POSTGRESQL_DB}
       # Измение POOL_MODE - требование Prisma ORM
       PGBOUCER_POOL_MODE: transaction
       POSTGRESQL_USERNAME: ${POSTGRESQL_USERNAME}
@@ -45,8 +45,8 @@ services:
       - svetoevents-db
       - svetoevents-bouncer
     environment:
-      DB_DIRECT_URL: postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@svetoevents-db:5432/${POSTGRESQL_DB_NAME}
-      DB_BOUNCER_URL: postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@svetoevents-bouncer:6432/${POSTGRESQL_DB_NAME}
+      DB_DIRECT_URL: postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@svetoevents-db:5432/${POSTGRESQL_DB}
+      DB_BOUNCER_URL: postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@svetoevents-bouncer:6432/${POSTGRESQL_DB}
 
   svetoevents-frontend:
     image: svetoevents/frontend
