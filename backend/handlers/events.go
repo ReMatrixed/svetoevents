@@ -24,7 +24,7 @@ func GetUpcomingEvents(c echo.Context) error {
 	}
 
 	var events []models.Event
-	db.DB.Order("date asc").Limit(params.Amount).Find(&events)
+	db.DB.Order("date ASC").Limit(params.Amount).Find(&events)
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"events": events,
 	})
@@ -48,7 +48,7 @@ func GetEventsByDate(c echo.Context) error {
 	}
 
 	var events []models.Event
-	db.DB.Order("date asc").
+	db.DB.Order("date ASC").
 		Limit(params.Amount).
 		Where("date BETWEEN ? AND ?", searchDate, searchDate.AddDate(0, 0, 1)).
 		Find(&events)
@@ -71,7 +71,7 @@ func GetEventsByTitle(c echo.Context) error {
 	}
 
 	var events []models.Event
-	db.DB.Order("date asc").
+	db.DB.Order("date ASC").
 		Limit(params.Amount).
 		Where(
 			"UPPER(title) LIKE ?",
