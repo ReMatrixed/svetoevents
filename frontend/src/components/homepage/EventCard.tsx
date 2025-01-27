@@ -21,7 +21,7 @@ export function EventCard(event: IEvent) {
     (state) => state.setData
   );
   return (
-    <Card className="h-[360px]">
+    <Card className="h-[350px]">
       <CardHeader>
         <CardTitle>
           {event.title}

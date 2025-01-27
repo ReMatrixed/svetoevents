@@ -34,7 +34,7 @@ export function UpcomingCarousel() {
             Ближайшие мероприятия
           </p>
         </Card>
-        <Skeleton className="h-[360px] rounded-xl" />
+        <Skeleton className="h-[350px] rounded-xl" />
       </div>
     );
   }
@@ -46,15 +46,15 @@ export function UpcomingCarousel() {
             Ближайшие мероприятия
           </p>
         </Card>
-        <Card className="h-[360px]">
+        <Card className="h-[350px]">
           <VisuallyHidden>
             <CardTitle>
               Ошибка загрузки мероприятий
             </CardTitle>
           </VisuallyHidden>
-          <CardContent className="h-[360px]">
+          <CardContent className="h-[350px]">
             <div className="flex flex-col h-full items-center justify-center gap-3">
-              <LucideBan size={48}/>
+              <LucideBan size={48} className="hover:rotate-90 duration-200"/>
               <h1 className="text-center">
                 Ошибка загрузки
               </h1>
