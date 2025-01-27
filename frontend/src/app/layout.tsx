@@ -25,12 +25,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning>
-      <body
-        className={
-          `${geologica.className} ${jetbrains.className} antialiased`
-        }
-      >
+    <html
+      lang="ru"
+      suppressHydrationWarning
+      className={`${geologica.variable} ${jetbrains.variable} antialiased`}
+    >
+      <head />
+      <body>
         <ThemeProvider
           attribute="class"
           enableSystem
