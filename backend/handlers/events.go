@@ -24,9 +24,45 @@ func GetUpcomingEvents(c echo.Context) error {
 	}
 
 	var events []models.Event
-	db.DB.Order("date ASC").Limit(params.Amount).Find(&events)
+	db.DB.Order("date ASC").
+		Limit(params.Amount).
+		Find(&events)
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"events": events,
+	})
+}
+
+func GetEventDates(c echo.Context) error {
+	type GetEventDatesDto struct {
+		Start string `query:"start" validate:"required,omitempty"`
+		End   string `query:"end" validate:"required,omitempty"`
+	}
+	var params GetEventDatesDto
+	if err := c.Bind(&params); err != nil {
+		return err
+	}
+	if err := c.Validate(params); err != nil {
+		return err
+	}
+	startDate, err := time.Parse(time.RFC3339, params.Start)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	endDate, err := time.Parse(time.RFC3339, params.End)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	endDate = endDate.AddDate(0, 0, 1)
+
+	var dates []time.Time
+	db.DB.Model(&models.Event{}).
+		Distinct("date").
+		Where("date >= ? AND date < ?", startDate, endDate).
+		Order("date ASC").
+		Select("date").
+		Find(&dates)
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"dates": dates,
 	})
 }
 
@@ -50,7 +86,7 @@ func GetEventsByDate(c echo.Context) error {
 	var events []models.Event
 	db.DB.Order("date ASC").
 		Limit(params.Amount).
-		Where("date BETWEEN ? AND ?", searchDate, searchDate.AddDate(0, 0, 1)).
+		Where("date >= ? and date < ?", searchDate, searchDate.AddDate(0, 0, 1)).
 		Find(&events)
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"events": events,

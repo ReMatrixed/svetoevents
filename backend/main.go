@@ -13,6 +13,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"golang.org/x/time/rate"
 )
 
 type GenericValidator struct {
@@ -60,10 +61,14 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.Secure())
+	e.Use(middleware.RateLimiter(
+		middleware.NewRateLimiterMemoryStore(rate.Limit(20)),
+	))
 
 	// Назначение путей (routing)
 	e.Static("/upload", "upload")
 	e.GET("/upcoming", handlers.GetUpcomingEvents)
+	e.GET("/event/dates", handlers.GetEventDates)
 	e.GET("/search/date", handlers.GetEventsByDate)
 	e.GET("/search/title", handlers.GetEventsByTitle)
 
