@@ -94,7 +94,6 @@ export default tseslint.config(
       "@stylistic/no-whitespace-before-property": ["error"],
       "@stylistic/object-curly-newline": ["error", { consistent: true }],
       "@stylistic/object-curly-spacing": ["error", "always"],
-      "@stylistic/operator-linebreak": ["error", "none"],
       "@stylistic/padded-blocks": ["error", "never"],
       "@stylistic/quote-props": ["error", "as-needed"],
       // Can be changed in the future
