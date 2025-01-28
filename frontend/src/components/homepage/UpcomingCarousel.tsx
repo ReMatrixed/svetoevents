@@ -5,7 +5,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { LucideBan } from "lucide-react";
 import useSWR from "swr";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { fetcher } from "@/lib/api";
 import { IEvent } from "@/lib/types";
 
