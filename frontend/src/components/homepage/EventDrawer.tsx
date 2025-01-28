@@ -1,7 +1,9 @@
 "use client";
 
 import NextImage from "next/image";
+import { useState } from "react";
 
+import placeholder from "@/assets/placeholder.png";
 import {
   Drawer,
   DrawerContent,
@@ -22,6 +24,10 @@ export function EventDrawer() {
   const eventData = useEventDrawerStore(
     (state) => state.data
   );
+  const [errorState, setErrorState] = useState<boolean>(false);
+  const imageUrl = errorState
+    ? placeholder
+    : "/api/upload/img/" + eventData.id + "/" + eventData.image;
   return (
     <Drawer
       open={drawerState}
@@ -39,13 +45,14 @@ export function EventDrawer() {
           <div className="rounded-md overflow-hidden">
             <NextImage
               className="hover:scale-125 transition-all duration-500"
-              src={"/api/upload/img/" + eventData.id + "/" + eventData.image}
+              src={imageUrl}
               width={300}
               height={200}
               alt="Изображение мероприятия"
               placeholder={
                 `data:image/svg+xml;base64,${toBase64(shimmerEffect(700, 475))}`
               }
+              onError={() => setErrorState(true)}
             />
           </div>
         </div>

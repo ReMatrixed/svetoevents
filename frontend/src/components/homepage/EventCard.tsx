@@ -1,5 +1,9 @@
-import NextImage from "next/image";
+"use client";
 
+import NextImage from "next/image";
+import { useState } from "react";
+
+import placeholder from "@/assets/placeholder.png";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,6 +24,11 @@ export function EventCard(event: IEvent) {
   const setDrawerData = useEventDrawerStore(
     (state) => state.setData
   );
+  const [errorState, setErrorState] = useState<boolean>(false);
+  const imageUrl = errorState
+    ? placeholder
+    : "/api/upload/img/" + event.id + "/" + event.image;
+
   return (
     <Card className="h-[350px]">
       <CardHeader>
@@ -38,13 +47,14 @@ export function EventCard(event: IEvent) {
             <NextImage
               style={{ objectFit: "fill", width: 270, height: 180 }}
               className="hover:scale-125 transition-all duration-500"
-              src={"/api/upload/img/" + event.id + "/" + event.image}
+              src={imageUrl}
               alt="Изображение мероприятия"
               width={300}
               height={200}
               placeholder={
                 `data:image/svg+xml;base64,${toBase64(shimmerEffect(300, 200))}`
               }
+              onError={() => setErrorState(true)}
             />
           </div>
           <Button
