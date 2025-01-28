@@ -19,10 +19,14 @@ interface responseScheme {
 
 export function UpcomingCarousel() {
   const { data, error, isLoading } = useSWR<responseScheme>(
-    "upcoming?amount=5",
+    "upcoming?" + new URLSearchParams({
+      amount: "5",
+    }).toString(),
     fetcher,
     {
+      fallbackData: { events: [] },
       shouldRetryOnError: false,
+      revalidateOnFocus: false,
     }
   );
 
@@ -82,7 +86,7 @@ export function UpcomingCarousel() {
         ]}
       >
         <CarouselContent className="mb-2">
-          {data?.events.map((event: IEvent) => {
+          {data!.events.map((event: IEvent) => {
             console.log(event);
             return (
               <CarouselItem key={event.id}>
