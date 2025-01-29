@@ -13,8 +13,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "preinstall": "npx only-allow pnpm",
-    "prepare": "cd .. && husky frontend/.husky"
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.5",
