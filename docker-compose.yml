@@ -45,8 +45,11 @@ services:
       - svetoevents-db
       - svetoevents-bouncer
     environment:
-      DB_DIRECT_URL: postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@svetoevents-db:5432/${POSTGRESQL_DB}
-      DB_BOUNCER_URL: postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@svetoevents-bouncer:6432/${POSTGRESQL_DB}
+      POSTGRESQL_USERNAME: ${POSTGRESQL_USERNAME}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_DB: ${POSTGRESQL_DB}
+      POSTGRESQL_HOST: svetoevents-bouncer
+      POSTGRESQL_PORT: 6432
 
   svetoevents-frontend:
     image: svetoevents/frontend
