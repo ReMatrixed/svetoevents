@@ -34,21 +34,17 @@ export function UpcomingCarousel() {
     return (
       <div className="flex flex-col gap-3">
         <Card className="p-5 text-center">
-          <p>
-            Ближайшие мероприятия
-          </p>
+          Ближайшие мероприятия
         </Card>
         <Skeleton className="h-[350px] rounded-xl" />
       </div>
     );
   }
-  if(error) {
+  else if(error) {
     return (
       <div className="flex flex-col gap-3">
         <Card className="p-5 text-center">
-          <p>
-            Ближайшие мероприятия
-          </p>
+          Ближайшие мероприятия
         </Card>
         <Card className="h-[350px]">
           <VisuallyHidden>
@@ -68,12 +64,10 @@ export function UpcomingCarousel() {
       </div>
     );
   }
-  return (
+  else return (
     <div className="flex flex-col gap-3">
       <Card className="p-5 text-center">
-        <p>
-          Ближайшие мероприятия
-        </p>
+        Ближайшие мероприятия
       </Card>
       <Carousel
         opts={{
@@ -90,7 +84,7 @@ export function UpcomingCarousel() {
             return (
               <CarouselItem key={event.id}>
                 <EventCard
-                  {...event}
+                  event={event}
                 />
               </CarouselItem>
             );
