@@ -17,7 +17,11 @@ import { IEvent } from "@/lib/types";
 import { toBase64 } from "@/lib/utils";
 import { useEventDrawerStore } from "@/store/eventDrawer";
 
-export function EventCard(event: IEvent) {
+interface propsEventCard {
+  event: IEvent;
+}
+
+export function EventCard({ event }: propsEventCard) {
   const setDrawerState = useEventDrawerStore(
     (state) => state.setState
   );
@@ -30,14 +34,12 @@ export function EventCard(event: IEvent) {
     : "/api/upload/img/" + event.id + "/" + event.image;
 
   return (
-    <Card className="h-[350px]">
+    <Card>
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="line-clamp-1">
           {event.title}
         </CardTitle>
-        <CardDescription
-          className="line-clamp-2"
-        >
+        <CardDescription className="h-8 leading-4 line-clamp-2">
           {event.description}
         </CardDescription>
       </CardHeader>
@@ -68,6 +70,56 @@ export function EventCard(event: IEvent) {
           </Button>
         </div>
       </CardContent>
+    </Card>
+  );
+}
+
+export function EventCardMinimal({ event }: propsEventCard) {
+  const setDrawerState = useEventDrawerStore(
+    (state) => state.setState
+  );
+  const setDrawerData = useEventDrawerStore(
+    (state) => state.setData
+  );
+  const [errorState, setErrorState] = useState<boolean>(false);
+  const imageUrl = errorState
+    ? placeholder
+    : "/api/upload/img/" + event.id + "/" + event.image;
+  return (
+    <Card className="p-3 flex flex-col gap-3">
+      <div className="flex flex-row items-center gap-3">
+        <div className="rounded-md overflow-hidden shrink-0">
+          <NextImage
+            style={{ objectFit: "fill", width: 135, height: 90 }}
+            className="hover:scale-125 transition-all duration-500"
+            src={imageUrl}
+            alt="Изображение мероприятия"
+            width={300}
+            height={200}
+            placeholder={
+              `data:image/svg+xml;base64,${toBase64(shimmerEffect(300, 200))}`
+            }
+            onError={() => setErrorState(true)}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <CardTitle className="line-clamp-2">
+            {event.title}
+          </CardTitle>
+          <CardDescription className="leading-4 line-clamp-3">
+            {event.description}
+          </CardDescription>
+        </div>
+      </div>
+      <Button
+        variant="secondary"
+        onClick={() => {
+          setDrawerData(event);
+          setDrawerState(true);
+        }}
+      >
+        Узнать больше
+      </Button>
     </Card>
   );
 }
