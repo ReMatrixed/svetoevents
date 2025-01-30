@@ -60,7 +60,7 @@ export default tseslint.config(
       "@stylistic/jsx-function-call-newline": ["error", "multiline"],
       "@stylistic/jsx-max-props-per-line": ["error", { when: "multiline" }],
       "@stylistic/jsx-pascal-case": "error",
-      "@stylistic/jsx-one-expression-per-line": ["error"],
+      // "@stylistic/jsx-one-expression-per-line": ["error"],
       "@stylistic/jsx-quotes": ["error", "prefer-double"],
       "@stylistic/jsx-self-closing-comp": ["error"],
       "@stylistic/key-spacing": [
