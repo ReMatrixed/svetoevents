@@ -1,3 +1,5 @@
+export const baseUrl = "/api";
+
 export const fetcher = (url: string) => fetch(
-  `/api/${url}`
+  `${baseUrl}/${url}`
 ).then(r => r.json());
