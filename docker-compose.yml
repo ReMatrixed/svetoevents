@@ -1,13 +1,23 @@
 # Обратите внимание: для production-сред рекомендуется использовать reverse-proxy
 
 services:
+  svetoevents-proxy:
+    image: traefik:v3.2
+    container_name: svetoevents-proxy
+    command: --api.insecure=true --providers.docker
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   svetoevents-db:
     image: postgres
     container_name: svetoevents-db
     restart: always
     shm_size: 256mb
-    ports:
-      - 5432:5432
+    # Для production-сред рекомендуется закрыть данные порты
+    # ports:
+    #   - 5432:5432
     volumes:
       - svetoevents-db-data:/var/lib/postgresql/data
     environment:
@@ -21,8 +31,9 @@ services:
     restart: always
     depends_on:
       - svetoevents-db
-    ports:
-      - 6432:6432
+    # Для production-сред рекомендуется закрыть данные порты
+    # ports:
+    #   - 6432:6432
     environment:
       PGBOUNCER_DATABASE: ${POSTGRESQL_DB}
       # Измение POOL_MODE - требование Prisma ORM
@@ -50,6 +61,10 @@ services:
       POSTGRESQL_DB: ${POSTGRESQL_DB}
       POSTGRESQL_HOST: svetoevents-bouncer
       POSTGRESQL_PORT: 6432
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)
+      - traefik.http.services.backend.loadbalancer.server.port=8000
 
   svetoevents-frontend:
     image: svetoevents/frontend
@@ -62,6 +77,10 @@ services:
       - 3000:3000
     depends_on:
       - svetoevents-backend
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=3000
 
 volumes:
   svetoevents-db-data:

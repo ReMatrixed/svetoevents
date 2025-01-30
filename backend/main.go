@@ -65,12 +65,15 @@ func main() {
 		middleware.NewRateLimiterMemoryStore(rate.Limit(20)),
 	))
 
+	// Создание группы для API
+	api := e.Group("/api")
+
 	// Назначение путей (routing)
-	e.Static("/upload", "upload")
-	e.GET("/upcoming", handlers.GetUpcomingEvents)
-	e.GET("/event/dates", handlers.GetEventDates)
-	e.GET("/search/date", handlers.GetEventsByDate)
-	e.GET("/search/title", handlers.GetEventsByTitle)
+	api.Static("/upload", "upload")
+	api.GET("/upcoming", handlers.GetUpcomingEvents)
+	api.GET("/event/dates", handlers.GetEventDates)
+	api.GET("/search/date", handlers.GetEventsByDate)
+	api.GET("/search/title", handlers.GetEventsByTitle)
 
 	// Запуск сервера
 	e.Logger.Fatal(e.Start(":8000"))
