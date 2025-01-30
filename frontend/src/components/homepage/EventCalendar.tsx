@@ -19,42 +19,6 @@ interface responseSchemeCalendar {
   dates: string[];
 }
 
-interface responseSchemeSearch {
-  events: IEvent[];
-}
-
-interface propsSearchResults {
-  events: IEvent[] | undefined;
-  error: boolean;
-  isLoading: boolean;
-}
-
-function SearchResults({ events, error, isLoading }: propsSearchResults) {
-  if(isLoading) {
-    return (
-      <Skeleton className="h-10" />
-    );
-  }
-  if(error) {
-    return (
-      <p>
-        error
-      </p>
-    );
-  }
-  return (
-    <>
-      {events!.map((event) => {
-        return (
-          <p key={event.id}>
-            {event.title}
-          </p>
-        );
-      })}
-    </>
-  );
-}
-
 export function EventCalendar() {
   const [
     selectedDate, setSelectedDate,
@@ -75,23 +39,6 @@ export function EventCalendar() {
     fetcher,
     {
       fallbackData: { dates: [] },
-      shouldRetryOnError: false,
-      revalidateOnFocus: false,
-    }
-  );
-  const {
-    data: searchData,
-    error: searchError,
-    isLoading: searchLoading,
-  } = useSWR<responseSchemeSearch>(
-    "search/date?" + new URLSearchParams({
-      amount: "5",
-      request: selectedDate!.toISOString(),
-    }).toString(),
-    fetcher,
-    {
-      fallbackData: { events: [] },
-      revalidateOnMount: false,
       shouldRetryOnError: false,
       revalidateOnFocus: false,
     }
@@ -171,11 +118,6 @@ export function EventCalendar() {
         }
         {!isResultsLoading && "Искать"}
       </Button>
-      <SearchResults
-        events={searchData?.events}
-        error={searchError}
-        isLoading={searchLoading}
-      />
     </div>
   );
 }
