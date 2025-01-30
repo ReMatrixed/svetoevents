@@ -68,7 +68,7 @@ func GetEventDates(c echo.Context) error {
 
 func GetEventsByDate(c echo.Context) error {
 	type GetEventsByDateDto struct {
-		Amount  int    `query:"amount" validate:"required,gte=1,lte=16"`
+		Amount  int    `query:"amount" validate:"required,gte=1"`
 		Request string `query:"request" validate:"required,omitempty"`
 	}
 	var params GetEventsByDateDto
@@ -102,7 +102,7 @@ func GetEventsByDate(c echo.Context) error {
 
 func GetEventsByTitle(c echo.Context) error {
 	type GetEventsByTitleDto struct {
-		Amount  int    `query:"amount" validate:"required,gte=1,lte=16"`
+		Amount  int    `query:"amount" validate:"required,gte=1"`
 		Request string `query:"request" validate:"required,min=1,max=64"`
 	}
 	var params GetEventsByTitleDto
