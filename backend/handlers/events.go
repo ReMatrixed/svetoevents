@@ -84,12 +84,19 @@ func GetEventsByDate(c echo.Context) error {
 	}
 
 	var events []models.Event
+	var available int64
 	db.DB.Order("date ASC").
-		Limit(params.Amount).
 		Where("date >= ? and date < ?", searchDate, searchDate.AddDate(0, 0, 1)).
+		Limit(params.Amount).
 		Find(&events)
+
+	db.DB.Model(&models.Event{}).
+		Where("date >= ? and date < ?", searchDate, searchDate.AddDate(0, 0, 1)).
+		Count(&available)
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"events": events,
+		"available": available,
+		"events":    events,
 	})
 }
 
