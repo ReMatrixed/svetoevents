@@ -91,7 +91,7 @@ export function EventCalendar() {
         </p>
       </Card>
       <Calendar
-        className="h-[320px] border p-5 rounded-xl shadow-sm"
+        className="h-[360px] border p-5 rounded-xl shadow-sm"
         required
         mode="single"
         selected={selectedDate}
@@ -101,10 +101,12 @@ export function EventCalendar() {
           highlight: datesData!.dates.map((dateStr): Date => new Date(dateStr)),
         }}
         modifiersClassNames={{
-          highlight: "after:h-[3px] after:w-2/3 after:absolute after:bottom-1 after:bg-green-600 after:rounded-sm",
+          highlight: "after:h-[3px] after:w-5 after:absolute after:bottom-1 after:bg-green-600 after:rounded-sm",
         }}
-        fromDate={subDays(currentDate, 90)}
-        toDate={addDays(currentDate, 90)}
+        disabled={{
+          before: subDays(currentDate, 90),
+          after: addDays(currentDate, 90),
+        }}
       />
       <Button
         disabled={selectedDate === undefined}
