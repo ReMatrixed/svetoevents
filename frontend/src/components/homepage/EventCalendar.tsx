@@ -9,14 +9,19 @@ import useSWR from "swr";
 
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { fetcher } from "@/lib/api";
+import { baseUrl, fetcher } from "@/lib/api";
 import { IEvent } from "@/lib/types";
 
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
+import { EventCardMinimal } from "./EventCard";
 
 interface responseSchemeCalendar {
   dates: string[];
+}
+interface responseSchemeSearch {
+  available: number;
+  events: IEvent[];
 }
 
 export function EventCalendar() {
@@ -24,6 +29,9 @@ export function EventCalendar() {
     selectedDate, setSelectedDate,
   ] = useState<Date | undefined>(new Date());
   const [isResultsLoading, setResultsLoading] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<IEvent[]>([]);
+  const [searchAvailable, setSearchAvailable] = useState<number>(3);
+  const [searchLimit, setSearchLimit] = useState<number>(3);
 
   const currentDate = useMemo(() => new Date(), []);
 
@@ -44,6 +52,19 @@ export function EventCalendar() {
     }
   );
 
+  const fetchEvents = (): void => {
+    fetch(`${baseUrl}/search/date?` + new URLSearchParams({
+      amount: searchLimit.toString(),
+      request: selectedDate!.toISOString(),
+    }))
+      .then(res => res.json())
+      .then((data: responseSchemeSearch) => {
+        setSearchResults(data.events);
+        setSearchAvailable(data.available);
+      })
+      .catch(error => console.log(error));
+  };
+
   if(datesError) {
     return (
       <div className="flex flex-col gap-3">
@@ -52,13 +73,13 @@ export function EventCalendar() {
             Ближайшие мероприятия
           </p>
         </Card>
-        <Card className="h-[350px]">
+        <Card className="h-[360px]">
           <VisuallyHidden>
             <CardTitle>
               Ошибка загрузки мероприятий
             </CardTitle>
           </VisuallyHidden>
-          <CardContent className="h-[350px]">
+          <CardContent className="h-[360px]">
             <div className="flex flex-col h-full items-center justify-center gap-3">
               <LucideBan size={48} className="hover:rotate-90 duration-200"/>
               <h1 className="text-center">
@@ -70,7 +91,7 @@ export function EventCalendar() {
       </div>
     );
   }
-  if(datesLoading) {
+  else if(datesLoading) {
     return (
       <div className="flex flex-col gap-3">
         <Card className="p-5 text-center">
@@ -78,12 +99,12 @@ export function EventCalendar() {
             Календарь мероприятий
           </p>
         </Card>
-        <Skeleton className="h-[320px] rounded-xl" />
+        <Skeleton className="h-[360px] rounded-xl" />
         <Skeleton className="h-9" />
       </div>
     );
   }
-  return (
+  else return (
     <div className="flex flex-col gap-3">
       <Card className="p-5 text-center">
         <p>
@@ -112,6 +133,8 @@ export function EventCalendar() {
         disabled={selectedDate === undefined}
         onClick={() => {
           setResultsLoading(true);
+          fetchEvents();
+          setResultsLoading(false);
         }}
       >
         {
@@ -120,6 +143,25 @@ export function EventCalendar() {
         }
         {!isResultsLoading && "Искать"}
       </Button>
+      {
+        searchResults.length == 0
+          ? <Card className="p-5 text-center">
+            <p>
+              Ничего не найдено
+            </p>
+          </Card>
+          : searchResults.map((event) => {
+            return (
+              <EventCardMinimal key={event.id} event={event} />
+            );
+          })
+      }
+      {
+        searchResults.length > 0
+          && <Card className="flex flex-col p-5 text-center gap-3">
+            Отображено {searchResults.length} из {searchAvailable}
+          </Card>
+      }
     </div>
   );
 }
