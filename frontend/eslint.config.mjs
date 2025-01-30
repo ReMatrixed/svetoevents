@@ -49,7 +49,7 @@ export default tseslint.config(
       "@stylistic/eol-last": ["error", "always"],
       "@stylistic/function-call-spacing": ["error"],
       "@stylistic/function-paren-newline": ["error", "consistent"],
-      "@stylistic/implicit-arrow-linebreak": ["error", "beside"],
+      // "@stylistic/implicit-arrow-linebreak": ["error", "beside"],
       "@stylistic/indent": ["error", 2],
       "@stylistic/jsx-closing-bracket-location": ["error", "line-aligned"],
       "@stylistic/jsx-closing-tag-location": ["error", "line-aligned"],
