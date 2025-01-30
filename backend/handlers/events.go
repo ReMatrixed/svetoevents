@@ -69,7 +69,7 @@ func GetEventDates(c echo.Context) error {
 func GetEventsByDate(c echo.Context) error {
 	type GetEventsByDateDto struct {
 		Amount  int    `query:"amount" validate:"required,gte=1,lte=16"`
-		Request string `query:"date" validate:"required,omitempty"`
+		Request string `query:"request" validate:"required,omitempty"`
 	}
 	var params GetEventsByDateDto
 	if err := c.Bind(&params); err != nil {
