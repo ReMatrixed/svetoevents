@@ -1,12 +1,13 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Geologica, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Montserrat } from "next/font/google";
 
 import { ThemeProvider } from "@/components/providers";
 
-const geologica = Geologica({
-  variable: "--font-geologica",
+const montserrat = Montserrat({
+  weight: "600",
+  variable: "--font-montserrat",
   subsets: ["cyrillic"],
 });
 const jetbrains = JetBrains_Mono({
@@ -28,7 +29,7 @@ export default function RootLayout({
     <html
       lang="ru"
       suppressHydrationWarning
-      className={`${geologica.variable} ${jetbrains.variable} antialiased`}
+      className={`${montserrat.variable} ${jetbrains.variable} antialiased`}
     >
       <head />
       <body>

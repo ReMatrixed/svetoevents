@@ -54,7 +54,7 @@ export default {
       },
       fontFamily: {
         sans: [
-          "var(--font-geologica)",
+          "var(--font-montserrat)",
         ],
         mono: [
           "var(--font-jetbrains-mono)",
