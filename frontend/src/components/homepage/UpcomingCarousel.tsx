@@ -87,7 +87,6 @@ export function UpcomingCarousel() {
       >
         <CarouselContent className="mb-2">
           {data!.events.map((event: IEvent) => {
-            console.log(event);
             return (
               <CarouselItem key={event.id}>
                 <EventCard
